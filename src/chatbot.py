@@ -1,53 +1,55 @@
 import os
 import pathlib
-from dotenv import load_dotenv,find_dotenv
-from langchain.schema import (
-    AIMessage,
-    HumanMessage,
-    SystemMessage
-)
-import pinecone
-from operator import itemgetter
+from dotenv import load_dotenv, find_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_openai import OpenAIEmbeddings
+from langchain_community.embeddings import CohereEmbeddings
 from langchain_community.chat_models import ChatCohere
-from langchain_community.vectorstores import Pinecone
+from langchain_community.vectorstores import Chroma, FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain, create_history_aware_retriever
 
 
+PATH = r"media\Indie Bites 9 PDF.pdf"
 load_dotenv(find_dotenv())
 output_parser = StrOutputParser()
-embeddings = OpenAIEmbeddings()
+embeddings = CohereEmbeddings()
+text_splitter = RecursiveCharacterTextSplitter(separators=[".", ","])
+loader = PyPDFLoader(PATH)
+doc = loader.load()
+docs = text_splitter.split_documents(doc)
+index = FAISS.from_documents(docs, embeddings)
 
-# pinecone.init(
-#     api_key=os.getenv('PINECONE_API_KEY'),  
-#     environment=os.getenv('PINECONE_ENV')  
-# )
 
-# llm = ChatOpenAI()
 llm = ChatCohere()
-prompt = ChatPromptTemplate.from_messages([
-    ("system", "You are an expert data summarizer"),
-    ("user", "what is the size of the earth {input}")
-])
-chain = prompt | llm | output_parser
+prompt = ChatPromptTemplate.from_template(
+    """
+    You are an ai assistant, answer the following question based on the context.
+    The context is an interview, answer the question based on the reply the interviewee gave.
+    use the context where relevant
 
-result = chain.invoke({"input": "Mr"})
-print(result)
+    <context>
+    {context}
+    </context>
 
+    Question: {input}
+    """
+)
 
-def save_document() -> None:
-    ...
+document_chain = create_stuff_documents_chain(llm, prompt)
+retriever = index.as_retriever()
+retrieval_chain = create_retrieval_chain(retriever, document_chain)
 
 
 def chat_response(prompt: str) -> str:
-    return ""
+    result = retrieval_chain.invoke({"input": prompt})
+    print(result["answer"])
+    return result["answer"]
 
 
 if __name__ == "__main__":
-    ...
+    chat_response("If you had to put a minor curse on a nemesis, what would you pick to really annoy them")
+    # save_pdf_document(r"media\Indie Bites 9 PDF.pdf")
