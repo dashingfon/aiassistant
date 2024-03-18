@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "aiassistant"
+version = "0.1.0"
+description = "This is an ai assistant trained with nuanced data"
+authors = ["Mfon Nwa <mfonnwa@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = "1.0.0"
+langchain = "0.1.10"
+pinecone-client = "2.2.1"
+langchain-openai = "^0.0.8"
+pypdf = "^4.1.0"
+fastapi = "^0.110.0"
+uvicorn = {extras = ["standard"], version = "^0.28.0"}
+sqlmodel = "0.0.16"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
