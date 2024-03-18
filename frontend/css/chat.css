@@ -5,6 +5,20 @@
     padding: 0;
 }
 
+.hidden {
+    display: none;
+}
+ .default-message {
+    padding: 50px;
+    font-size: larger;
+    font-weight: 800;
+ }
+
+.default-message p {
+    padding: 30px;
+    font-weight: 500;
+}
+
 .chat-input {
     border: 1px solid #171616;
     display: block;

@@ -6,36 +6,61 @@
     <title>AI Assistant</title>
     <script src="/frontend/js/htmx.min.js"></script>
     <script src="/frontend/js/chat.js" defer></script>
+    <script>
+        let default_message = true
+        let ai_message = (message) => {
+            return `{% include "ai_message.html" %}`
+        }
+    
+        let human_message = (message) => {
+            return `{% include "human_message.html" %}`
+        }
+    </script>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/frontend/css/chat.css">
 </head>
 <body>
     <div class="chat-area">
-        <div class="chat-message">
-            <img src="/media/15.png" alt="character avatar" width="45px" height="45px">
-            <div class="content">
-                <p class="header">AI Assistant</p>
-                <div class="chat-content">Hello! Not much, just here to help. How can I assist you today?</div>
-            </div>
+        <div id="default-chat" class="default-message hidden">
+            Ask the AI assistant anything you would like to know
+            <p>
+                Like; <br>
+
+                1. What is your favorite thing to do? <br>
+                2. Can you tell me a joke? <br>
+                3. What's the weather like today? <br>
+                4. What are some interesting facts you know? <br>
+                5. Can you recommend a book/movie/TV show? <br>
+                6. Can you teach me something new? <br>
+            </p>
         </div>
-        <div class="chat-message">
-            <img src="/media/31.png" alt="character avatar" width="45px" height="45px">
-            <div class="content human-message">
-                <p class="header">User</p>
-                <div class="chat-content">Hello! Not much, just here to help. How can I assist you today?</div>
+        <div id="chats" class="">
+            <div class="chat-message">
+                <img src="/media/15.png" alt="character avatar" width="45px" height="45px">
+                <div class="content">
+                    <p class="header">AI Assistant</p>
+                    <div class="chat-content">Hello! Not much, just here to help. How can I assist you today?</div>
+                </div>
             </div>
-        </div>
-        <div class="chat-message">
-            <img src="/media/15.png" alt="character avatar" width="45px" height="45px">
-            <div class="content">
-                <p class="header">AI Assistant</p>
-                <div class="chat-content"><img src="/media/Circles-menu-3.gif" alt=""></div>
+            <div class="chat-message">
+                <img src="/media/31.png" alt="character avatar" width="45px" height="45px">
+                <div class="content human-message">
+                    <p class="header">User</p>
+                    <div class="chat-content">Hello! Not much, just here to help. How can I assist you today?</div>
+                </div>
+            </div>
+            <div class="chat-message">
+                <img src="/media/15.png" alt="character avatar" width="45px" height="45px">
+                <div class="content">
+                    <p class="header">AI Assistant</p>
+                    <div class="chat-content"><img src="/media/Circles-menu-3.gif" alt=""></div>
+                </div>
             </div>
         </div>
     </div>
     <div class="chat-footer">
-        <!-- <button id="clear-chats" class="red-button">Clear</button> -->
-        <span class="chat-input" role="textbox" contenteditable>
+        <button id="clear-chats" class="red-button">Clear</button>
+        <span id="chat-input" class="chat-input" role="textbox" contenteditable>
         </span>
         <button id="send-button" class="green-button">Send</button>
     </div>
