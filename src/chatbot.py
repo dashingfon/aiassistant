@@ -1,12 +1,11 @@
 import os
 import pathlib
 from dotenv import load_dotenv, find_dotenv
-from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_community.embeddings import CohereEmbeddings
 from langchain_community.chat_models import ChatCohere
-from langchain_community.vectorstores import Chroma, FAISS
+from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -51,5 +50,5 @@ def chat_response(prompt: str) -> str:
 
 
 if __name__ == "__main__":
-    chat_response("If you had to put a minor curse on a nemesis, what would you pick to really annoy them")
+    chat_response("whats in store for your readers next?")
     # save_pdf_document(r"media\Indie Bites 9 PDF.pdf")
