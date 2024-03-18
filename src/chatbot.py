@@ -2,14 +2,14 @@ import os
 import pathlib
 from dotenv import load_dotenv, find_dotenv
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.embeddings import CohereEmbeddings
 from langchain_community.chat_models import ChatCohere
 from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain.chains import create_retrieval_chain, create_history_aware_retriever
+from langchain.chains import create_retrieval_chain
 
 
 PATH = r"media\Indie Bites 9 PDF.pdf"
@@ -51,4 +51,3 @@ def chat_response(prompt: str) -> str:
 
 if __name__ == "__main__":
     chat_response("whats in store for your readers next?")
-    # save_pdf_document(r"media\Indie Bites 9 PDF.pdf")
