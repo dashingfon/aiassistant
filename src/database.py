@@ -1,14 +1,24 @@
 import pathlib
-from typing import Any, TypeVar, Type, Iterable
-from sqlmodel import SQLModel, Session, create_engine, select
+from enum import Enum
+from typing import Any, TypeVar, Type, Iterable, Optional
+from sqlmodel import SQLModel, Session, create_engine, select, Field
+
+
+class Sender(str, Enum):
+    human = "human"
+    ai = "ai"
 
 
 class NameSpace(SQLModel, table=True):
-    ...
+    id: Optional[int] = Field(default=None, primary_key=True)
+    key: str = Field(index=True, unique=True)
+    value: str
 
 
 class MessageHistory(SQLModel, table=True):
-    ...
+    id: Optional[int] = Field(default=None, primary_key=True)
+    sender: Sender
+    message: str
 
 DATA = TypeVar("DATA")
 PATH = pathlib.PurePath(__file__).parent.parent
@@ -53,4 +63,12 @@ def delete(session: Session, *data: DATA) -> None:
 
 
 if __name__ == "__main__":
-    ...
+
+    def set_chat_cutoff(num: int):
+        ...
+    
+    def set_api_protection(protect: bool):
+        ...
+
+    set_chat_cutoff(0)
+    set_api_protection(False)

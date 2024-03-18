@@ -43,6 +43,7 @@
 .chat-footer {
     display: flex;
     gap: 20px;
+    align-items: flex-end;
 }
 
 .human-message {
