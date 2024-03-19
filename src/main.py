@@ -65,14 +65,14 @@ def main(request: Request, session: Annotated[db.Session, Depends(get_session)])
         "request": request,
         "messages": "".join(result),
         "is_default_message": not bool(messages),
-        "path": "true" if path else "false",
+        "path": path
     }
     return templates.TemplateResponse("chat_template.html", context)
 
 
 @app.get("/get_response")
 def get_response(message: str, session: Annotated[db.Session, Depends(get_session)]):
-    default_response = "This chatbot is currently turned off, the creator is broke and can no longer afford the price of the api key for the model, sponsor 0x65f38316d9a220d81a5EA4ee389b7f383796c276"
+    default_response = "This chatbot is currently turned off, the creator is broke and can no longer afford the price of the api key for the model, sponsor 0x30b54aB924dC1D4025dfbf4a8a7B7C942f578e5a"
     db_value = db.read(
         session=session,
         data=db.NameSpace,
