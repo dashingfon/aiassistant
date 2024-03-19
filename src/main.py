@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from typing import Annotated
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -14,10 +14,11 @@ from . import database as db
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     db.create_db_and_tables()
+    filename = "Indie Bites 9 PDF.pdf"
     global path
-    path = "/media/Indie Bites 9 PDF.pdf"
+    path = f"media/{filename}"
     global ai_assistant
-    ai_assistant = chatbot.ChatBot(path)
+    ai_assistant = chatbot.ChatBot(f"{db.PATH.joinpath('media', filename)}")
     yield
 
 
@@ -34,7 +35,7 @@ def get_session():
 
 
 @app.get("/", response_class=HTMLResponse)
-def main(session: Annotated[db.Session, Depends(get_session)]):
+def main(request: Request, session: Annotated[db.Session, Depends(get_session)]):
     messages = db.read(session=session, data=db.MessageHistory)
     cutoff = db.read(
         session=session,
@@ -42,11 +43,11 @@ def main(session: Annotated[db.Session, Depends(get_session)]):
         query=[db.NameSpace.key == "chat-cutoff"],
         limit=1,
     )
-    with open("../frontend/ai_message.html") as AI:
+    with open(f"{db.PATH.joinpath('frontend', 'ai_message.html')}") as AI:
         ai_message_template = AI.read()
-    with open("../frontend/human_message.html") as HM:
+    with open(f"{db.PATH.joinpath('frontend', 'human_message.html')}") as HM:
         human_message_template = HM.read()
-    messages = messages[int(cutoff) :]
+    messages = messages[int(cutoff[0].value) :]
     result: list[str] = []
     for message in messages:
         template = (
@@ -60,7 +61,12 @@ def main(session: Annotated[db.Session, Depends(get_session)]):
                 f'<div class="chat-content">{message.message}</div>',
             )
         )
-    context = {"messages": "".join(result), "is_default_message": not bool(messages), "path": path}
+    context = {
+        "request": request,
+        "messages": "".join(result),
+        "is_default_message": not bool(messages),
+        "path": "true" if path else "false",
+    }
     return templates.TemplateResponse("chat_template.html", context)
 
 

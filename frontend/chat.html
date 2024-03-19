@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Assistant</title>
     <!-- <script src="/frontend/js/htmx.min.js"></script> -->
-    <script src="/frontend/js/chat.js" defer></script>
     <script>
         let default_message = {{ is_default_message }}
         let ai_message = (message) => {
@@ -16,6 +15,7 @@
             return `{% include "human_message.html" %}`
         }
     </script>
+    <script src="{{url_for('frontend', path='/js/chat.js')}}" defer></script>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/frontend/css/chat.css">
 </head>
