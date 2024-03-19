@@ -7,6 +7,8 @@ Retrieval: This part involves a large database of text documents or passages, of
 
 Generation: Once relevant passages are retrieved, the generation component comes into play. This part of the model is responsible for understanding the query and synthesizing a response based on the retrieved information. It utilizes state-of-the-art language generation techniques, often based on transformer models like GPT (Generative Pre-trained Transformer), to produce coherent and contextually relevant answers.
 
+However the movel is not conversational and doesnt have conversation memory, that can be added on later.
+
 The Document used in this model is a [pdf](/media/Indie%20Bites%209%20PDF.pdf) which contains an interview with the writer Talli L. Morgan and other short fiction stories.
 
 The AI Assistant is context aware and is able to answer questions from the document with accuracy.

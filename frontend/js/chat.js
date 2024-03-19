@@ -14,7 +14,7 @@ let send_to_backend = async (message) => {
   let response = await fetch(`/get_response?message=${message}`, {
     method: "GET"
   })
-  response_json = response.json()
+  response_json = await response.json()
   return response_json.response
 }
 

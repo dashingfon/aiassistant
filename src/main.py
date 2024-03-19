@@ -83,5 +83,11 @@ def get_response(message: str, session: Annotated[db.Session, Depends(get_sessio
     if not public:
         result = {"response": default_response}
     else:
-        result = {"response": ai_assistant.respond(message)}
+        response = ai_assistant.respond(message)
+        history = [
+            db.MessageHistory(sender=db.Sender.human, message=message),
+            db.MessageHistory(sender=db.Sender.ai, message=response)
+        ]
+        db.create(session, *history)
+        result = {"response": response}
     return result

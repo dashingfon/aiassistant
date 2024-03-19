@@ -27,9 +27,9 @@ class ChatBot:
         self.llm = ChatCohere()
         self.prompt = ChatPromptTemplate.from_template(
             """
-            You are an eloquent english speaker and writer, using the information in the context, answer the questions
-            from your perspective using the context. some parts of the context is an inteview while the other parts are
-            short fiction stories.
+            You are an eloquent english speaker and writer, answer the question as accurately as possible,
+            using the context only when the question is not well understood. When using the context,
+            include only information from the context.
 
             <context>
             {context}
@@ -46,41 +46,6 @@ class ChatBot:
         result = self.retrieval_chain.invoke({"input": message})
         return result["answer"]
 
-
-# PATH = r"media\Indie Bites 9 PDF.pdf"
-# output_parser = StrOutputParser()
-# embeddings = CohereEmbeddings()
-# text_splitter = RecursiveCharacterTextSplitter(separators=[".", ","])
-# loader = PyPDFLoader(PATH)
-# doc = loader.load()
-# docs = text_splitter.split_documents(doc)
-# index = FAISS.from_documents(docs, embeddings)
-
-
-# llm = ChatCohere()
-# prompt = ChatPromptTemplate.from_template(
-#     """
-#     You are an ai assistant, answer the following question based on the context.
-#     The context is an interview, answer the question based on the reply the interviewee gave.
-#     use the context where relevant
-
-#     <context>
-#     {context}
-#     </context>
-
-#     Question: {input}
-#     """
-# )
-
-# document_chain = create_stuff_documents_chain(llm, prompt)
-# retriever = index.as_retriever()
-# retrieval_chain = create_retrieval_chain(retriever, document_chain)
-
-
-# def chat_response(prompt: str) -> str:
-#     result = retrieval_chain.invoke({"input": prompt})
-#     print(result["answer"])
-#     return result["answer"]
 
 
 if __name__ == "__main__":
