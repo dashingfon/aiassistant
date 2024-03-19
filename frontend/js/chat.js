@@ -24,12 +24,13 @@ document.getElementById("send-button").addEventListener("click", async () => {
   if (default_message) {
     document.getElementById("chats").classList.remove("hidden")
     document.getElementById("default-chat").classList.add("hidden")
+    default_message = false
   }
-  let imput_element = document.getElementById("chat-input")
-  let message = imput_element.innerHTML
-  imput_element.innerHTML = "";
-  let human_message = human_message(message)
-  let ai_message = ai_message('<img src="/media/Circles-menu-3.gif" alt="">')
+  let input_element = document.getElementById("chat-input")
+  let message = input_element.innerHTML
+  input_element.innerHTML = "";
+  let human_message = human_message(`<div class="chat-content">${message}</div>`)
+  let ai_message = ai_message('<div class="chat-content pending"><img src="/media/Circles-menu-3.gif" alt=""></div>')
   document.getElementById("chats").insertAdjacentHTML("afterend", human_message)
   document.getElementById("chats").insertAdjacentHTML("afterend", ai_message)
   let ai_response = await send_to_backend(message)

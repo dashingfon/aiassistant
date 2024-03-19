@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Assistant</title>
-    <!-- <script src="/frontend/js/htmx.min.js"></script> -->
     <script src="/frontend/js/chat.js" defer></script>
     <script>
-        let default_message = true
+        let default_message = = {{ is_default_message }}
         let ai_message = (message) => {
             return `{% include "ai_message.html" %}`
         }
@@ -22,10 +21,12 @@
 <body>
     <div class="chat-area">
         <div id="default-chat" class="default-message hidden">
-            Ask the AI assistant anything you would like to know or about details from this <a href="">pdf</a>
+            Ask the AI assistant anything you would like to know or about details from this <a href="{{ path }}">pdf</a>
         </div>
         <div id="chats" class="">
-            {{ messages }}
+            {% if messages %}
+                {{ messages }}
+            {% endif %}
         </div>
     </div>
     <div class="chat-footer">

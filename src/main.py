@@ -14,7 +14,8 @@ from . import database as db
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     db.create_db_and_tables()
-    path = ""
+    global path
+    path = "/media/Indie Bites 9 PDF.pdf"
     global ai_assistant
     ai_assistant = chatbot.ChatBot(path)
     yield
@@ -31,30 +32,51 @@ def get_session():
     with db.Session(db.engine) as session:
         yield session
 
+
 @app.get("/", response_class=HTMLResponse)
 def main(session: Annotated[db.Session, Depends(get_session)]):
+    messages = db.read(session=session, data=db.MessageHistory)
+    cutoff = db.read(
+        session=session,
+        data=db.NameSpace,
+        query=[db.NameSpace.key == "chat-cutoff"],
+        limit=1,
+    )
     with open("../frontend/ai_message.html") as AI:
         ai_message_template = AI.read()
     with open("../frontend/human_message.html") as HM:
         human_message_template = HM.read()
-    # check chat mark
-
-    message_history = []
-    context = {"messages": message_history.join("")}
-
+    messages = messages[int(cutoff) :]
+    result: list[str] = []
+    for message in messages:
+        template = (
+            ai_message_template
+            if message.sender.value == "ai"
+            else human_message_template
+        )
+        result.append(
+            template.replace(
+                "${message}",
+                f'<div class="chat-content">{message.message}</div>',
+            )
+        )
+    context = {"messages": "".join(result), "is_default_message": not bool(messages), "path": path}
     return templates.TemplateResponse("chat_template.html", context)
 
 
 @app.get("/get_response")
-def get_response(message: str):
-    default_response = ""
+def get_response(message: str, session: Annotated[db.Session, Depends(get_session)]):
+    default_response = "This chatbot is currently turned off, the creator is broke and can no longer afford the price of the api key for the model :'(;_;, sponsor 0x65f38316d9a220d81a5EA4ee389b7f383796c276"
     result = {"response": ""}
-    # check api protection
-
-    flag: bool
-    result = {"response": ""}
-    if flag:
-        result["response"] = default_response
+    db_value = db.read(
+        session=session,
+        data=db.NameSpace,
+        query=[db.NameSpace.key == "api-protection"],
+        limit=1,
+    )
+    public = bool(db_value) and db_value[0].value == "true"
+    if not public:
+        result = {"response": default_response}
     else:
-        result["response"] = ai_assistant.respond(message)
+        result = {"response": ai_assistant.respond(message)}
     return result

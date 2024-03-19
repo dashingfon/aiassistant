@@ -7,7 +7,7 @@
     <!-- <script src="/frontend/js/htmx.min.js"></script> -->
     <script src="/frontend/js/chat.js" defer></script>
     <script>
-        let default_message = true
+        let default_message = {{ is_default_message }}
         let ai_message = (message) => {
             return `{% include "ai_message.html" %}`
         }

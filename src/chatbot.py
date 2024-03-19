@@ -46,6 +46,7 @@ class ChatBot:
         result = self.retrieval_chain.invoke({"input": message})
         return result["answer"]
 
+
 # PATH = r"media\Indie Bites 9 PDF.pdf"
 # output_parser = StrOutputParser()
 # embeddings = CohereEmbeddings()
