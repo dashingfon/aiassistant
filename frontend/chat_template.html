@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Assistant</title>
     <!-- <script src="/frontend/js/chat.js" defer></script> -->
-    <script defer>
+    <script>
         let ai_message = (message) => {
             return `{% include "ai_message.html" %}`
         }
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{{url_for('frontend', path='css/chat.css')}}">
 </head>
 <body>
-    <div class="chat-area">
+    <div class="chat-area" id="chats-area">
         <div id="default-chat" class="default-message {% if messages %} hidden {% endif %}">
             Ask the AI assistant anything you would like to know or about details from this <a href="{{ path }}">pdf</a>
         </div>

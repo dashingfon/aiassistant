@@ -27,9 +27,9 @@ class ChatBot:
         self.llm = ChatCohere()
         self.prompt = ChatPromptTemplate.from_template(
             """
-            You are an ai assistant, answer the following question based on the context.
-            The context is an interview, answer the question based on the reply the interviewee gave.
-            use the context where relevant
+            You are an eloquent english speaker and writer, using the information in the context, answer the questions
+            from your perspective using the context. some parts of the context is an inteview while the other parts are
+            short fiction stories.
 
             <context>
             {context}

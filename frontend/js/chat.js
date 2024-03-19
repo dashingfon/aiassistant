@@ -11,7 +11,7 @@ let enableButtons = () => {
 };
 
 let send_to_backend = async (message) => {
-  let response = await fetch(`/get_response?messsage=${message}`, {
+  let response = await fetch(`/get_response?message=${message}`, {
     method: "GET"
   })
   response_json = response.json()
@@ -38,8 +38,11 @@ document.getElementById("send-button").addEventListener("click", async () => {
   input_element.innerHTML = "";
   let human_message_string = human_message(`<div class="chat-content">${message}</div>`)
   let ai_message_string = ai_message('<div class="chat-content pending"><img src="/media/Circles-menu-3.gif" alt="awaiting response"></div>')
-  document.getElementById("chats").insertAdjacentHTML("beforeend", human_message_string)
-  document.getElementById("chats").insertAdjacentHTML("beforeend", ai_message_string)
+  let chat = document.getElementById("chats")
+  chat.insertAdjacentHTML("beforeend", human_message_string)
+  chat.insertAdjacentHTML("beforeend", ai_message_string)
+  let chat_area = document.getElementById("chats-area")
+  chat_area.scrollTop = chat_area.scrollHeight
   let ai_response = await send_to_backend(message)
   let ai_response_element = document.querySelector('.pending')
   ai_response_element.classList.remove("pending")

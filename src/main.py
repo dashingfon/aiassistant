@@ -72,8 +72,7 @@ def main(request: Request, session: Annotated[db.Session, Depends(get_session)])
 
 @app.get("/get_response")
 def get_response(message: str, session: Annotated[db.Session, Depends(get_session)]):
-    default_response = "This chatbot is currently turned off, the creator is broke and can no longer afford the price of the api key for the model :'(;_;, sponsor 0x65f38316d9a220d81a5EA4ee389b7f383796c276"
-    result = {"response": ""}
+    default_response = "This chatbot is currently turned off, the creator is broke and can no longer afford the price of the api key for the model, sponsor 0x65f38316d9a220d81a5EA4ee389b7f383796c276"
     db_value = db.read(
         session=session,
         data=db.NameSpace,
