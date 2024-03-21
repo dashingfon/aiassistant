@@ -26,6 +26,12 @@ let is_hidden = (element) => {
   }
 }
 
+htmx.logger = (elt, event, data) => {
+  if (console) {
+    console.log(event, elt, data);
+  }
+};
+
 
 document.getElementById("send-button").addEventListener("click", async () => {
   disableButtons()

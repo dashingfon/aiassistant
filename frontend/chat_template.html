@@ -13,18 +13,20 @@
         let human_message = (message) => {
             return `{% include "human_message.html" %}`
         }
+
+        let chat_history = `{{ messages }}`
     </script>
+    <script src="{{ url_for('frontend', path='js/htmx.min.js') }}"></script>
     <script src="{{url_for('frontend', path='js/chat.js')}}" defer></script>
     <link rel="icon" href="{{url_for('media', path='/uifaces-robot-image.jpg')}}" type="image/jpg">
     <link rel="stylesheet" href="{{url_for('frontend', path='css/chat.css')}}">
 </head>
 <body>
     <div class="chat-area" id="chats-area">
-        <div id="default-chat" class="default-message {% if messages %} hidden {% endif %}">
+        <div id="default-chat" class="default-message">
             Ask the AI assistant anything you would like to know or about details from this <a href="{{ path }}">pdf</a>
         </div>
-        <div id="chats" class="">
-            {{ messages }}
+        <div id="chats" class="" hx-get="/chat_history" hx-swap="innerHTML" hx-trigger="load">
         </div>
     </div>
     <div class="chat-footer">

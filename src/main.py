@@ -35,36 +35,9 @@ def get_session():
 
 
 @app.get("/", response_class=HTMLResponse)
-def main(request: Request, session: Annotated[db.Session, Depends(get_session)]):
-    messages = db.read(session=session, data=db.MessageHistory)
-    cutoff = db.read(
-        session=session,
-        data=db.NameSpace,
-        query=[db.NameSpace.key == "chat-cutoff"],
-        limit=1,
-    )
-    with open(f"{db.PATH.joinpath('frontend', 'ai_message.html')}") as AI:
-        ai_message_template = AI.read()
-    with open(f"{db.PATH.joinpath('frontend', 'human_message.html')}") as HM:
-        human_message_template = HM.read()
-    messages = messages[int(cutoff[0].value) :]
-    result: list[str] = []
-    for message in messages:
-        template = (
-            ai_message_template
-            if message.sender.value == "ai"
-            else human_message_template
-        )
-        result.append(
-            template.replace(
-                "${message}",
-                f'<div class="chat-content">{message.message}</div>',
-            )
-        )
+def main(request: Request):
     context = {
         "request": request,
-        "messages": "".join(result),
-        "is_default_message": not bool(messages),
         "path": path
     }
     return templates.TemplateResponse("chat_template.html", context)
@@ -91,3 +64,33 @@ def get_response(message: str, session: Annotated[db.Session, Depends(get_sessio
         db.create(session, *history)
         result = {"response": response}
     return result
+
+
+@app.get("/chat_history", response_class=HTMLResponse)
+def get_chat_history(session: Annotated[db.Session, Depends(get_session)]):
+    messages = db.read(session=session, data=db.MessageHistory)
+    cutoff = db.read(
+        session=session,
+        data=db.NameSpace,
+        query=[db.NameSpace.key == "chat-cutoff"],
+        limit=1,
+    )
+    with open(f"{db.PATH.joinpath('frontend', 'ai_message.html')}") as AI:
+        ai_message_template = AI.read()
+    with open(f"{db.PATH.joinpath('frontend', 'human_message.html')}") as HM:
+        human_message_template = HM.read()
+    messages = messages[int(cutoff[0].value) :]
+    result: list[str] = []
+    for message in messages:
+        template = (
+            ai_message_template
+            if message.sender.value == "ai"
+            else human_message_template
+        )
+        result.append(
+            template.replace(
+                "${message}",
+                f'<div class="chat-content">{message.message}</div>',
+            )
+        )
+    return "".join(result)
