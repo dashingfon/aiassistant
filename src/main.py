@@ -36,10 +36,7 @@ def get_session():
 
 @app.get("/", response_class=HTMLResponse)
 def main(request: Request):
-    context = {
-        "request": request,
-        "path": path
-    }
+    context = {"request": request, "path": path}
     return templates.TemplateResponse("chat_template.html", context)
 
 
@@ -59,7 +56,7 @@ def get_response(message: str, session: Annotated[db.Session, Depends(get_sessio
         response = ai_assistant.respond(message)
         history = [
             db.MessageHistory(sender=db.Sender.human, message=message),
-            db.MessageHistory(sender=db.Sender.ai, message=response)
+            db.MessageHistory(sender=db.Sender.ai, message=response),
         ]
         db.create(session, *history)
         result = {"response": response}

@@ -47,7 +47,6 @@ class ChatBot:
         return result["answer"]
 
 
-
 if __name__ == "__main__":
     chat_bot = ChatBot(r"media\Indie Bites 9 PDF.pdf")
     print(chat_bot.respond("how are you?"))
