@@ -80,4 +80,4 @@ if __name__ == "__main__":
             create(session, var)
 
     set_chat_cutoff(0)
-    set_api_protection(False)
+    set_api_protection(True)
