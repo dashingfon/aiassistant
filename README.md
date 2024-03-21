@@ -12,4 +12,4 @@ However the movel is not conversational and doesnt have conversation memory, tha
 The Document used in this model is a [pdf](/media/Indie%20Bites%209%20PDF.pdf) which contains an interview with the writer Talli L. Morgan and other short fiction stories.
 The AI assistant is succesfully able to answer questions as if it was the one being interviewed and it can also correctly recount events that occoured in the short fiction stories with high accuracy.
 
-The live demo of this model can be found [here](https://theaiassistant.online)
+The live demo of this model can be found [here](https://aiassistants.site)

@@ -19,7 +19,7 @@ class ChatBot:
         self.path = reference_path
         self.output_parser = StrOutputParser()
         self.embeddings = CohereEmbeddings()
-        self.text_splitter = RecursiveCharacterTextSplitter(separators=[".", ","])
+        self.text_splitter = RecursiveCharacterTextSplitter()
         self.loader = PyPDFLoader(self.path)
         doc = self.loader.load()
         docs = self.text_splitter.split_documents(doc)
