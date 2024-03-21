@@ -79,12 +79,15 @@ if __name__ == "__main__":
             var = NameSpace(key="api-protection", value=value)
             create(session, var)
 
-    with Session(engine) as session:
-        var = read(
-            session=session,
-            data=NameSpace,
-            query=[NameSpace.key == "api-protection"],
-            limit=1,
-        )[0]
-        var.value = "true"
-        session.commit()
+    # with Session(engine) as session:
+    #     var = read(
+    #         session=session,
+    #         data=NameSpace,
+    #         query=[NameSpace.key == "api-protection"],
+    #         limit=1,
+    #     )[0]
+    #     var.value = "true"
+    #     session.commit()
+            
+    set_api_protection(True)
+    set_chat_cutoff(0)
