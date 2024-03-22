@@ -73,7 +73,7 @@ if __name__ == "__main__":
             var = read(session=session, data=NameSpace, query=[NameSpace.key == "chat-cutoff"], limit=1)
             if var:
                 var[0].value = value
-                session.commit
+                session.commit()
             else:
                 create(session, NameSpace(key="chat-cutoff", value=value))
 
@@ -83,7 +83,7 @@ if __name__ == "__main__":
             var = read(session=session, data=NameSpace, query=[NameSpace.key == "api-protection"], limit=1)
             if var:
                 var[0].value = value
-                session.commit
+                session.commit()
             else:
                 create(session, NameSpace(key="api-protection", value=value))
     
