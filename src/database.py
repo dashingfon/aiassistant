@@ -70,24 +70,24 @@ if __name__ == "__main__":
     def set_chat_cutoff(num: int):
         value = str(num)
         with Session(engine) as session:
-            var = NameSpace(key="chat-cutoff", value=value)
-            create(session, var)
+            var = read(session=session, data=NameSpace, query=[NameSpace.key == "chat-cutoff"], limit=1)
+            if var:
+                var[0].value = value
+                session.commit
+            else:
+                create(session, NameSpace(key="chat-cutoff", value=value))
 
     def set_api_protection(protect: bool):
         value = "true" if protect else "false"
         with Session(engine) as session:
-            var = NameSpace(key="api-protection", value=value)
-            create(session, var)
-
-    # with Session(engine) as session:
-    #     var = read(
-    #         session=session,
-    #         data=NameSpace,
-    #         query=[NameSpace.key == "api-protection"],
-    #         limit=1,
-    #     )[0]
-    #     var.value = "true"
-    #     session.commit()
-            
-    # set_api_protection(True)
-    # set_chat_cutoff(0)
+            var = read(session=session, data=NameSpace, query=[NameSpace.key == "api-protection"], limit=1)
+            if var:
+                var[0].value = value
+                session.commit
+            else:
+                create(session, NameSpace(key="api-protection", value=value))
+    
+    def get_chat_length() -> int:
+        with Session(engine) as session:
+            chats = read(session=session, data=MessageHistory)
+            return len(chats)
