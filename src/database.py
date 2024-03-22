@@ -89,5 +89,5 @@ if __name__ == "__main__":
     #     var.value = "true"
     #     session.commit()
             
-    set_api_protection(True)
-    set_chat_cutoff(0)
+    # set_api_protection(True)
+    # set_chat_cutoff(0)
